@@ -1,1 +1,73 @@
-Testing456
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Projects</title>
+<style>
+    html{
+        background-color: #333333;
+    }
+
+    body{
+        background-color: #999999;
+        width: 75%;
+        margin: 0 auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2, p{
+        margin: 0;
+    }
+
+    .repo-box{
+        background-color: aqua;
+        padding: .5em;
+        overflow: hidden;
+        margin-bottom: .5em;
+    }
+
+    #project-details{
+        padding: .5em;
+    }
+
+    #project-details div:nth-last-child(1){
+        margin-bottom: 0;
+    }
+
+</style>
+</head>
+<body>
+    <div id="project-details">
+        <!-- Project details will be displayed here -->
+    </div>
+
+    <script>
+        const token = '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';
+        const username = 'FEDavid';
+
+        // Fetch repositories using GitHub API
+        fetch(`https://api.github.com/users/${username}/repos`, {
+            headers: {
+                Authorization: `token ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const projectDetails = data.map(repo => `
+                <div class="repo-box">
+                    <h2>${repo.name}</h2>
+                    <p>${repo.description}</p>
+                    <p>Language: ${repo.language}</p>
+                    <p>URL: <a href="${repo.html_url}" target="_blank">${repo.html_url}</a></p>
+                </div>
+            `).join('');
+
+            // Display project details in the specified HTML element
+            document.getElementById('project-details').innerHTML = projectDetails;
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+</body>
+</html>
